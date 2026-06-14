@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            'primary': '#0A1128',
+            'secondary': '#1C2E4A',
+            'accent': '#3B82F6',
+            'accent-dark': '#2563EB'
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #0A1128;
+      color: #fff;
+    }
+    .card-dark {
+      background-color: #1C2E4A;
+    }
+    .btn-primary {
+      background-color: #3B82F6;
+    }
+    .btn-primary:hover {
+      background-color: #2563EB;
+    }
+  </style>
+</head>
+<body class="bg-primary text-white">
+  <!-- Navbar -->
+  <nav class="card-dark shadow-lg sticky top-0 z-50">
+    <div class="max-w-7xl mx-auto px-4">
+      <div class="flex justify-between items-center h-16">
+        <!-- Logo -->
+        <div class="flex items-center">
+          <a href="/" class="text-2xl font-bold text-accent">
+            <i class="fas fa-store mr-2"></i>ClintStore
+          </a>
+        </div>
+
+        <!-- Desktop Menu -->
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="/" class="hover:text-accent transition">Beranda</a>
+          <a href="/produk" class="hover:text-accent transition">Semua Produk</a>
+          <a href="/cek-pesanan" class="hover:text-accent transition">Cek Pesanan</a>
+          <a href="/keranjang" class="relative hover:text-accent transition">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span id="cart-badge" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">
+              <span id="cart-count">0</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <div class="md:hidden flex items-center space-x-4">
+          <a href="/keranjang" class="relative">
+            <i class="fas fa-shopping-cart text-xl"></i>
+            <span id="cart-badge-mobile" class="absolute -top-2 -right-3 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center hidden">
+              <span id="cart-count-mobile">0</span>
+            </span>
+          </a>
+          <button id="mobile-menu-btn" class="text-xl">
+            <i class="fas fa-bars"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="hidden md:hidden pb-4 space-y-2">
+        <a href="/" class="block py-2 hover:text-accent transition">Beranda</a>
+        <a href="/produk" class="block py-2 hover:text-accent transition">Semua Produk</a>
+        <a href="/cek-pesanan" class="block py-2 hover:text-accent transition">Cek Pesanan</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="min-h-screen">
+    <%- body %>
+  </main>
+
+  <!-- Footer -->
+  <footer class="card-dark mt-16 border-t border-gray-700">
+    <div class="max-w-7xl mx-auto px-4 py-12">
+      <div class="grid md:grid-cols-4 gap-8 mb-8">
+        <!-- Tentang -->
+        <div>
+          <h4 class="text-accent font-bold mb-4">Tentang ClintStore</h4>
+          <p class="text-gray-400 text-sm">
+            Toko premium menyediakan joki, akun, APK, executor, dan script berkualitas tinggi dengan sistem otomatis 24/7.
+          </p>
+        </div>
+
+        <!-- Layanan -->
+        <div>
+          <h4 class="text-accent font-bold mb-4">Layanan</h4>
+          <ul class="text-gray-400 text-sm space-y-2">
+            <li><a href="#" class="hover:text-accent transition">Joki Game</a></li>
+            <li><a href="#" class="hover:text-accent transition">Jual Akun</a></li>
+            <li><a href="#" class="hover:text-accent transition">APK Premium</a></li>
+            <li><a href="#" class="hover:text-accent transition">Executor Script</a></li>
+          </ul>
+        </div>
+
+        <!-- Kontak -->
+        <div>
+          <h4 class="text-accent font-bold mb-4">Kontak</h4>
+          <ul class="text-gray-400 text-sm space-y-2">
+            <li><i class="fas fa-phone text-accent mr-2"></i>+62 812-3456-7890</li>
+            <li><i class="fas fa-envelope text-accent mr-2"></i>support@clintstore.com</li>
+            <li><i class="fas fa-map-marker-alt text-accent mr-2"></i>Indonesia</li>
+          </ul>
+        </div>
+
+        <!-- Sosial Media -->
+        <div>
+          <h4 class="text-accent font-bold mb-4">Ikuti Kami</h4>
+          <div class="flex space-x-4">
+            <a href="#" class="text-gray-400 hover:text-accent transition text-xl">
+              <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-accent transition text-xl">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-accent transition text-xl">
+              <i class="fab fa-youtube"></i>
+            </a>
+            <a href="#" class="text-gray-400 hover:text-accent transition text-xl">
+              <i class="fab fa-telegram"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom -->
+      <div class="border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+        <p>&copy; 2024 ClintStore. Semua hak dilindungi. | <a href="#" class="hover:text-accent">Kebijakan Privasi</a> | <a href="#" class="hover:text-accent">Syarat & Ketentuan</a></p>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    
+    if (mobileMenuBtn) {
+      mobileMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.toggle('hidden');
+      });
+    }
+
+    // Update cart badge
+    function updateCartBadge() {
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      const count = cart.length;
+      
+      const badge = document.getElementById('cart-badge');
+      const badgeMobile = document.getElementById('cart-badge-mobile');
+      const countEl = document.getElementById('cart-count');
+      const countElMobile = document.getElementById('cart-count-mobile');
+      
+      if (count > 0) {
+        badge.classList.remove('hidden');
+        badgeMobile.classList.remove('hidden');
+        countEl.textContent = count;
+        countElMobile.textContent = count;
+      } else {
+        badge.classList.add('hidden');
+        badgeMobile.classList.add('hidden');
+      }
+    }
+
+    // Update on page load
+    updateCartBadge();
+    
+    // Listen for storage changes
+    window.addEventListener('storage', updateCartBadge);
+  </script>
+</body>
+</html>
