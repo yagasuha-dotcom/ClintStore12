@@ -1,0 +1,407 @@
+<%- include('layouts/main') %>
+
+<!-- Page Header -->
+<section class="bg-secondary py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <h1 class="text-3xl font-bold">Checkout</h1>
+    <p class="text-gray-400 mt-2">Lengkapi data dan pilih metode pembayaran</p>
+  </div>
+</section>
+
+<!-- Checkout Content -->
+<section class="py-12 bg-primary">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Form Column -->
+      <div class="md:col-span-2">
+        <form id="checkout-form" class="space-y-6">
+          <!-- Section 1: Customer Info -->
+          <div class="card-dark rounded-lg p-6 border border-gray-700">
+            <h3 class="text-lg font-bold text-accent mb-6">
+              <i class="fas fa-user-circle mr-2"></i>Data Pemesan
+            </h3>
+
+            <div class="space-y-4">
+              <!-- Nama Lengkap -->
+              <div>
+                <label class="block text-sm font-semibold mb-2">Nama Lengkap *</label>
+                <input 
+                  type="text" 
+                  id="customer_name" 
+                  name="customer_name"
+                  placeholder="Masukkan nama lengkap Anda" 
+                  required
+                  class="w-full bg-secondary border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent transition"
+                >
+                <p class="text-xs text-gray-400 mt-1">Gunakan nama yang sama dengan rekening bank</p>
+              </div>
+
+              <!-- No WhatsApp -->
+              <div>
+                <label class="block text-sm font-semibold mb-2">No WhatsApp *</label>
+                <div class="flex gap-2">
+                  <div class="bg-secondary border border-gray-700 rounded-lg px-4 py-3 text-gray-400 flex items-center">
+                    +62
+                  </div>
+                  <input 
+                    type="tel" 
+                    id="customer_phone" 
+                    name="customer_phone"
+                    placeholder="812345678901" 
+                    required
+                    class="flex-1 bg-secondary border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent transition"
+                  >
+                </div>
+                <p class="text-xs text-gray-400 mt-1">Contoh: 812345678901 (tanpa 62 di depan)</p>
+              </div>
+
+              <!-- Email -->
+              <div>
+                <label class="block text-sm font-semibold mb-2">Email *</label>
+                <input 
+                  type="email" 
+                  id="customer_email" 
+                  name="customer_email"
+                  placeholder="email@example.com" 
+                  required
+                  class="w-full bg-secondary border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent transition"
+                >
+                <p class="text-xs text-gray-400 mt-1">Invoice akan dikirim ke email ini</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Section 2: Promo Code -->
+          <div class="card-dark rounded-lg p-6 border border-gray-700">
+            <h3 class="text-lg font-bold text-accent mb-6">
+              <i class="fas fa-tag mr-2"></i>Kode Promo (Opsional)
+            </h3>
+
+            <div class="flex gap-2">
+              <input 
+                type="text" 
+                id="promo_code" 
+                name="promo_code"
+                placeholder="Masukkan kode promo" 
+                class="flex-1 bg-secondary border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-accent transition uppercase"
+              >
+              <button 
+                type="button" 
+                id="apply-promo-btn"
+                class="btn-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition"
+              >
+                <i class="fas fa-check mr-2"></i>Apply
+              </button>
+            </div>
+            
+            <div id="promo-info" class="hidden mt-4 p-3 bg-green-500/20 border border-green-500 rounded text-green-300 text-sm">
+              <i class="fas fa-check-circle mr-2"></i>
+              <span id="promo-message"></span>
+            </div>
+
+            <div id="promo-error" class="hidden mt-4 p-3 bg-red-500/20 border border-red-500 rounded text-red-300 text-sm">
+              <i class="fas fa-exclamation-circle mr-2"></i>
+              <span id="promo-error-message"></span>
+            </div>
+          </div>
+
+          <!-- Section 3: Payment Method -->
+          <div class="card-dark rounded-lg p-6 border border-gray-700">
+            <h3 class="text-lg font-bold text-accent mb-6">
+              <i class="fas fa-credit-card mr-2"></i>Metode Pembayaran *
+            </h3>
+
+            <div class="space-y-3">
+              <!-- QRIS -->
+              <label class="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:border-accent transition payment-method-option" data-method="qris">
+                <input 
+                  type="radio" 
+                  name="payment_method" 
+                  value="qris" 
+                  required
+                  class="w-4 h-4 accent-accent"
+                >
+                <div class="ml-4 flex-1">
+                  <p class="font-semibold">QRIS</p>
+                  <p class="text-sm text-gray-400">Scan QR code untuk membayar</p>
+                </div>
+                <i class="fas fa-qrcode text-2xl text-accent"></i>
+              </label>
+
+              <!-- Bank Transfer -->
+              <label class="flex items-center p-4 border border-gray-700 rounded-lg cursor-pointer hover:border-accent transition payment-method-option" data-method="transfer">
+                <input 
+                  type="radio" 
+                  name="payment_method" 
+                  value="transfer" 
+                  required
+                  class="w-4 h-4 accent-accent"
+                >
+                <div class="ml-4 flex-1">
+                  <p class="font-semibold">Transfer Bank</p>
+                  <p class="text-sm text-gray-400">Transfer langsung ke rekening kami</p>
+                </div>
+                <i class="fas fa-building text-2xl text-accent"></i>
+              </label>
+            </div>
+
+            <!-- Payment Info -->
+            <div id="payment-info" class="mt-6 p-4 bg-secondary/50 border border-gray-700 rounded-lg hidden">
+              <p class="text-sm text-gray-300 mb-3">
+                <span id="payment-info-text"></span>
+              </p>
+              <div id="bank-details" class="hidden bg-secondary p-4 rounded border border-accent/30">
+                <p class="text-xs text-gray-400 mb-2">Nomor Rekening:</p>
+                <p class="font-mono text-lg font-bold text-accent">1234567890 (BCA)</p>
+                <p class="text-xs text-gray-400 mt-2">Atas Nama: ClintStore</p>
+              </div>
+              <div id="qris-info" class="hidden">
+                <p class="text-xs text-gray-400 mb-2">Silakan scan QR code setelah melanjutkan checkout</p>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <!-- Order Summary Column -->
+      <div>
+        <div class="card-dark rounded-lg p-6 border border-gray-700 sticky top-24">
+          <h3 class="text-lg font-bold text-accent mb-6">
+            <i class="fas fa-receipt mr-2"></i>Ringkasan Pesanan
+          </h3>
+
+          <!-- Items List -->
+          <div id="order-items" class="space-y-4 mb-6 pb-6 border-b border-gray-700">
+            <!-- Items will be loaded here -->
+          </div>
+
+          <!-- Calculations -->
+          <div class="space-y-3 mb-6 pb-6 border-b border-gray-700">
+            <div class="flex justify-between text-gray-300 text-sm">
+              <span>Subtotal:</span>
+              <span id="summary-subtotal">Rp 0</span>
+            </div>
+            <div class="flex justify-between text-gray-300 text-sm">
+              <span>Diskon:</span>
+              <span id="summary-discount" class="text-green-400">Rp 0</span>
+            </div>
+            <div class="flex justify-between text-gray-300 text-sm">
+              <span>Pajak (0%):</span>
+              <span id="summary-tax">Rp 0</span>
+            </div>
+          </div>
+
+          <!-- Total -->
+          <div class="flex justify-between items-center mb-6">
+            <span class="font-bold text-lg">Total Pembayaran:</span>
+            <span id="summary-total" class="text-accent font-bold text-2xl">Rp 0</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button 
+            type="submit" 
+            form="checkout-form"
+            id="submit-checkout-btn"
+            class="w-full btn-primary text-white py-3 rounded-lg font-semibold hover:shadow-lg transition flex items-center justify-center"
+          >
+            <i class="fas fa-lock mr-2"></i>Bayar Sekarang
+          </button>
+
+          <!-- Loading State -->
+          <div id="checkout-loading" class="hidden w-full bg-gray-600 text-white py-3 rounded-lg font-semibold text-center">
+            <i class="fas fa-spinner fa-spin mr-2"></i>Memproses...
+          </div>
+
+          <!-- Back to Cart -->
+          <a href="/keranjang" class="block w-full text-center text-accent border border-accent py-2 rounded-lg font-semibold hover:bg-accent/10 transition mt-3">
+            <i class="fas fa-arrow-left mr-2"></i>Kembali ke Keranjang
+          </a>
+
+          <!-- Info Box -->
+          <div class="mt-6 p-4 bg-blue-500/10 border border-blue-500/30 rounded text-blue-300 text-xs">
+            <i class="fas fa-info-circle mr-2"></i>
+            <span>Silakan periksa semua data sebelum melanjutkan pembayaran. Data tidak dapat diubah setelah submit.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // Load cart items
+  function loadOrderSummary() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const container = document.getElementById('order-items');
+    
+    if (cart.length === 0) {
+      window.location.href = '/keranjang';
+      return;
+    }
+
+    container.innerHTML = '';
+    let subtotal = 0;
+
+    cart.forEach((item, index) => {
+      const itemTotal = item.price * item.quantity;
+      subtotal += itemTotal;
+
+      const itemHTML = `
+        <div class="flex justify-between text-sm">
+          <div>
+            <p class="font-semibold">${item.name}</p>
+            <p class="text-gray-400">x${item.quantity}</p>
+          </div>
+          <p class="font-semibold text-accent">Rp ${itemTotal.toLocaleString('id-ID')}</p>
+        </div>
+      `;
+      container.innerHTML += itemHTML;
+    });
+
+    updateOrderSummary(subtotal, 0);
+  }
+
+  // Update order summary
+  function updateOrderSummary(subtotal, discount) {
+    const tax = 0;
+    const total = subtotal - discount + tax;
+
+    document.getElementById('summary-subtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+    document.getElementById('summary-discount').textContent = `Rp ${discount.toLocaleString('id-ID')}`;
+    document.getElementById('summary-tax').textContent = `Rp ${tax.toLocaleString('id-ID')}`;
+    document.getElementById('summary-total').textContent = `Rp ${total.toLocaleString('id-ID')}`;
+  }
+
+  // Apply Promo
+  document.getElementById('apply-promo-btn').addEventListener('click', async () => {
+    const promoCode = document.getElementById('promo_code').value.toUpperCase();
+
+    if (!promoCode) {
+      showPromoError('Masukkan kode promo terlebih dahulu');
+      return;
+    }
+
+    try {
+      // Validasi promo (bisa ditambahkan endpoint API untuk ini)
+      const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+      let subtotal = 0;
+      cart.forEach(item => {
+        subtotal += item.price * item.quantity;
+      });
+
+      // Placeholder validation - disesuaikan dengan promo di backend
+      if (promoCode === 'WELCOME10') {
+        const discount = Math.round(subtotal * 0.1);
+        updateOrderSummary(subtotal, discount);
+        
+        document.getElementById('promo-info').classList.remove('hidden');
+        document.getElementById('promo-error').classList.add('hidden');
+        document.getElementById('promo-message').textContent = `Promo WELCOME10 berhasil! Diskon 10% (Rp ${discount.toLocaleString('id-ID')})`;
+      } else {
+        showPromoError('Kode promo tidak valid atau sudah kadaluarsa');
+      }
+    } catch (error) {
+      showPromoError('Terjadi kesalahan saat memvalidasi promo');
+    }
+  });
+
+  function showPromoError(message) {
+    document.getElementById('promo-error').classList.remove('hidden');
+    document.getElementById('promo-info').classList.add('hidden');
+    document.getElementById('promo-error-message').textContent = message;
+  }
+
+  // Payment Method Selection
+  document.querySelectorAll('.payment-method-option').forEach(option => {
+    option.addEventListener('click', function() {
+      const method = this.dataset.method;
+      const paymentInfo = document.getElementById('payment-info');
+      const bankDetails = document.getElementById('bank-details');
+      const qrisInfo = document.getElementById('qris-info');
+
+      paymentInfo.classList.remove('hidden');
+
+      if (method === 'qris') {
+        document.getElementById('payment-info-text').textContent = 'Silakan scan QR code untuk menyelesaikan pembayaran';
+        bankDetails.classList.add('hidden');
+        qrisInfo.classList.remove('hidden');
+      } else {
+        document.getElementById('payment-info-text').textContent = 'Transfer ke rekening berikut:';
+        bankDetails.classList.remove('hidden');
+        qrisInfo.classList.add('hidden');
+      }
+    });
+  });
+
+  // Form Submission
+  document.getElementById('checkout-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    
+    if (cart.length === 0) {
+      alert('Keranjang Anda kosong');
+      return;
+    }
+
+    const formData = {
+      customer_name: document.getElementById('customer_name').value,
+      customer_email: document.getElementById('customer_email').value,
+      customer_phone: '62' + document.getElementById('customer_phone').value,
+      payment_method: document.querySelector('input[name="payment_method"]:checked').value,
+      promo_code: document.getElementById('promo_code').value || null,
+      items: cart.map(item => ({
+        product_id: item.product_id,
+        quantity: item.quantity,
+        price: item.price
+      }))
+    };
+
+    // Validate form
+    if (!formData.customer_name || !formData.customer_email || !formData.customer_phone.length) {
+      alert('Silakan lengkapi semua data yang diperlukan');
+      return;
+    }
+
+    // Show loading state
+    document.getElementById('submit-checkout-btn').classList.add('hidden');
+    document.getElementById('checkout-loading').classList.remove('hidden');
+
+    try {
+      const response = await fetch('/api/checkout', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.status === 'success') {
+        // Clear cart
+        localStorage.removeItem('cart');
+        window.dispatchEvent(new Event('storage'));
+
+        // Redirect to success page
+        const invoice = data.order.invoice_number;
+        const total = data.order.final_price;
+        setTimeout(() => {
+          window.location.href = `/sukses?invoice=${encodeURIComponent(invoice)}&total=${total}`;
+        }, 500);
+      } else {
+        throw new Error(data.error || 'Checkout gagal');
+      }
+    } catch (error) {
+      console.error('Checkout error:', error);
+      alert(`Terjadi kesalahan: ${error.message}`);
+      
+      // Reset button
+      document.getElementById('submit-checkout-btn').classList.remove('hidden');
+      document.getElementById('checkout-loading').classList.add('hidden');
+    }
+  });
+
+  // Load on page load
+  loadOrderSummary();
+</script>
