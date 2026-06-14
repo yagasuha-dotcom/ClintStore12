@@ -1,0 +1,119 @@
+<%- include('layouts/main') %>
+
+<!-- Page Header -->
+<section class="bg-secondary py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <h1 class="text-3xl font-bold">Semua Produk</h1>
+    <p class="text-gray-400 mt-2">Pilih produk favorit Anda dari koleksi lengkap kami</p>
+  </div>
+</section>
+
+<!-- Main Content -->
+<section class="py-12 bg-primary">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid md:grid-cols-5 gap-8">
+      <!-- Sidebar - Filter -->
+      <div class="md:col-span-1">
+        <div class="card-dark rounded-lg p-6 border border-gray-700 sticky top-24">
+          <h3 class="text-lg font-bold text-accent mb-6">Filter</h3>
+
+          <!-- Category Filter -->
+          <div class="mb-6">
+            <h4 class="font-semibold mb-4">Kategori</h4>
+            <div class="space-y-3">
+              <% categories.forEach(cat => { %>
+                <a href="/produk?kategori=<%= cat %>" 
+                   class="block text-sm py-2 px-3 rounded transition <%= selectedCategory === cat ? 'bg-accent text-white' : 'text-gray-400 hover:text-accent' %>">
+                  <%= cat.charAt(0).toUpperCase() + cat.slice(1) %>
+                </a>
+              <% }); %>
+            </div>
+          </div>
+
+          <!-- Reset Filter -->
+          <a href="/produk" class="w-full block text-center py-2 border border-accent text-accent rounded font-semibold hover:bg-accent/10 transition">
+            Reset Filter
+          </a>
+        </div>
+      </div>
+
+      <!-- Main Content - Products -->
+      <div class="md:col-span-4">
+        <!-- Search Bar -->
+        <div class="mb-8">
+          <form method="GET" class="flex gap-2">
+            <input type="hidden" name="kategori" value="<%= selectedCategory %>">
+            <input 
+              type="text" 
+              name="cari" 
+              placeholder="Cari produk..." 
+              value="<%= searchQuery %>"
+              class="flex-1 bg-secondary border border-gray-700 rounded-lg px-4 py-3 focus:outline-none focus:border-accent transition text-white placeholder-gray-500"
+            >
+            <button type="submit" class="btn-primary text-white px-6 py-3 rounded-lg font-semibold hover:shadow-lg transition">
+              <i class="fas fa-search"></i>
+            </button>
+          </form>
+        </div>
+
+        <!-- Products Grid -->
+        <% if (products && products.length > 0) { %>
+          <div class="grid md:grid-cols-3 gap-6 mb-8">
+            <% products.forEach(product => { %>
+              <div class="card-dark rounded-lg overflow-hidden border border-gray-700 hover:border-accent transition group">
+                <!-- Product Image Placeholder -->
+                <div class="bg-gradient-to-br from-secondary to-primary h-48 flex items-center justify-center group-hover:bg-accent/20 transition">
+                  <i class="fas fa-box text-4xl text-accent/50"></i>
+                </div>
+
+                <div class="p-4">
+                  <!-- Product Name -->
+                  <h3 class="font-bold text-lg mb-2 group-hover:text-accent transition line-clamp-2">
+                    <%= product.name %>
+                  </h3>
+
+                  <!-- Product Description -->
+                  <p class="text-gray-400 text-sm mb-4 line-clamp-2">
+                    <%= product.description || 'Produk berkualitas premium' %>
+                  </p>
+
+                  <!-- Price and Stock -->
+                  <div class="flex justify-between items-center mb-4">
+                    <span class="text-accent font-bold text-lg">
+                      Rp <%= product.price.toLocaleString('id-ID') %>
+                    </span>
+                    <span class="text-xs bg-accent/20 text-accent px-2 py-1 rounded">
+                      Stok: <%= product.stock %>
+                    </span>
+                  </div>
+
+                  <!-- Buy Button -->
+                  <a href="/produk/<%= product.id %>" class="block w-full btn-primary text-white py-2 rounded font-semibold text-center hover:shadow-lg transition">
+                    <i class="fas fa-shopping-bag mr-2"></i>Beli
+                  </a>
+                </div>
+              </div>
+            <% }); %>
+          </div>
+
+          <!-- Pagination Info -->
+          <div class="text-center text-gray-400 mb-8">
+            <p>Menampilkan <%= products.length %> produk</p>
+          </div>
+        <% } else { %>
+          <!-- Empty State -->
+          <div class="card-dark rounded-lg p-12 border border-gray-700 text-center">
+            <i class="fas fa-inbox text-5xl text-accent/50 mb-4"></i>
+            <h3 class="text-xl font-bold mb-2">Produk Tidak Ditemukan</h3>
+            <p class="text-gray-400 mb-6">
+              Coba cari dengan kata kunci yang berbeda atau pilih kategori lain
+            </p>
+            <a href="/produk" class="inline-block btn-primary text-white px-6 py-2 rounded-lg font-semibold hover:shadow-lg transition">
+              Lihat Semua Produk
+            </a>
+          </div>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
