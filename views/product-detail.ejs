@@ -1,0 +1,266 @@
+<%- include('layouts/main') %>
+
+<!-- Page Header -->
+<section class="bg-secondary py-8">
+  <div class="max-w-7xl mx-auto px-4">
+    <nav class="text-gray-400 text-sm mb-4">
+      <a href="/" class="hover:text-accent">Beranda</a>
+      <span class="mx-2">/</span>
+      <a href="/produk" class="hover:text-accent">Produk</a>
+      <span class="mx-2">/</span>
+      <span class="text-accent"><%= product.name %></span>
+    </nav>
+    <h1 class="text-3xl font-bold"><%= product.name %></h1>
+  </div>
+</section>
+
+<!-- Product Detail -->
+<section class="py-12 bg-primary">
+  <div class="max-w-7xl mx-auto px-4">
+    <div class="grid md:grid-cols-2 gap-12">
+      <!-- Product Image -->
+      <div>
+        <div class="card-dark rounded-lg p-8 border border-gray-700 h-96 flex items-center justify-center">
+          <i class="fas fa-box text-6xl text-accent/50"></i>
+        </div>
+      </div>
+
+      <!-- Product Info -->
+      <div>
+        <!-- Product Title -->
+        <h1 class="text-3xl font-bold mb-4"><%= product.name %></h1>
+
+        <!-- Rating (placeholder) -->
+        <div class="flex items-center mb-6">
+          <div class="text-yellow-500">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star-half-alt"></i>
+          </div>
+          <span class="text-gray-400 ml-3">(128 ulasan)</span>
+        </div>
+
+        <!-- Price -->
+        <div class="mb-6">
+          <span class="text-4xl font-bold text-accent">
+            Rp <%= product.price.toLocaleString('id-ID') %>
+          </span>
+          <p class="text-gray-400 mt-2">Harga dapat berubah sewaktu-waktu</p>
+        </div>
+
+        <!-- Stock -->
+        <div class="mb-6">
+          <p class="text-gray-400 mb-2">Ketersediaan Stok:</p>
+          <div class="flex items-center">
+            <% if (product.stock > 10) { %>
+              <span class="text-green-400 font-semibold">
+                <i class="fas fa-check-circle mr-2"></i>Stok Tersedia (<%= product.stock %> unit)
+              </span>
+            <% } else if (product.stock > 0) { %>
+              <span class="text-yellow-400 font-semibold">
+                <i class="fas fa-exclamation-circle mr-2"></i>Stok Terbatas (<%= product.stock %> unit)
+              </span>
+            <% } else { %>
+              <span class="text-red-400 font-semibold">
+                <i class="fas fa-times-circle mr-2"></i>Stok Habis
+              </span>
+            <% } %>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="mb-8 p-6 bg-secondary rounded-lg border border-gray-700">
+          <h3 class="font-bold text-lg mb-3 text-accent">Deskripsi Produk</h3>
+          <p class="text-gray-300">
+            <%= product.description || 'Produk premium berkualitas tinggi dengan jaminan kepuasan pelanggan 100%. Tersedia dengan berbagai pilihan sesuai kebutuhan Anda.' %>
+          </p>
+        </div>
+
+        <!-- Buy Form -->
+        <div class="space-y-4 mb-8">
+          <!-- Quantity -->
+          <div>
+            <label class="block text-sm font-semibold mb-2">Jumlah (Quantity):</label>
+            <div class="flex items-center gap-4">
+              <button id="qty-minus" class="btn-primary text-white w-10 h-10 rounded font-bold text-lg">−</button>
+              <input id="quantity" type="number" min="1" max="<%= product.stock %>" value="1" class="w-20 text-center bg-secondary border border-gray-700 rounded px-3 py-2 text-white focus:border-accent outline-none">
+              <button id="qty-plus" class="btn-primary text-white w-10 h-10 rounded font-bold text-lg">+</button>
+              <span class="text-gray-400 text-sm">Max: <%= product.stock %> unit</span>
+            </div>
+          </div>
+
+          <!-- Data Target (for joki/akun) -->
+          <div id="data-target-section" class="hidden">
+            <label class="block text-sm font-semibold mb-2">Data Target (Username/Email/ID):</label>
+            <input id="data-target" type="text" placeholder="Masukkan username, email, atau ID target" class="w-full bg-secondary border border-gray-700 rounded px-4 py-2 text-white focus:border-accent outline-none">
+            <p class="text-gray-400 text-xs mt-1">Opsional: Data target untuk produk joki atau akun</p>
+          </div>
+
+          <!-- Notes -->
+          <div>
+            <label class="block text-sm font-semibold mb-2">Catatan Tambahan (Opsional):</label>
+            <textarea id="notes" placeholder="Berikan catatan khusus jika ada..." class="w-full bg-secondary border border-gray-700 rounded px-4 py-2 text-white focus:border-accent outline-none h-24 resize-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="flex gap-4 mb-8">
+          <!-- Add to Cart -->
+          <button id="add-to-cart-btn" onclick="addToCart()" class="flex-1 btn-primary text-white py-3 rounded-lg font-semibold hover:shadow-lg transition">
+            <i class="fas fa-shopping-cart mr-2"></i>Tambah ke Troli
+          </button>
+
+          <!-- Buy Now -->
+          <button id="buy-now-btn" onclick="buyNow()" class="flex-1 border-2 border-accent text-accent py-3 rounded-lg font-semibold hover:bg-accent/10 transition">
+            <i class="fas fa-bolt mr-2"></i>Beli Sekarang
+          </button>
+        </div>
+
+        <!-- Disabled State Warning -->
+        <% if (product.stock <= 0) { %>
+          <div class="bg-red-500/20 border border-red-500 text-red-300 px-4 py-3 rounded-lg text-sm">
+            <i class="fas fa-exclamation-triangle mr-2"></i>Produk ini saat ini tidak tersedia. Cek kembali nanti atau hubungi customer service.
+          </div>
+        <% } %>
+
+        <!-- Features -->
+        <div class="mt-8 pt-8 border-t border-gray-700 space-y-4">
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check text-green-400 mt-1"></i>
+            <div>
+              <p class="font-semibold">Garansi Kepuasan</p>
+              <p class="text-gray-400 text-sm">Uang kembali 100% jika tidak puas</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check text-green-400 mt-1"></i>
+            <div>
+              <p class="font-semibold">Pengiriman Cepat</p>
+              <p class="text-gray-400 text-sm">Proses instan setelah pembayaran</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <i class="fas fa-check text-green-400 mt-1"></i>
+            <div>
+              <p class="font-semibold">Support 24/7</p>
+              <p class="text-gray-400 text-sm">Hubungi kami kapan saja untuk bantuan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related Products -->
+<section class="py-12 bg-primary border-t border-gray-700">
+  <div class="max-w-7xl mx-auto px-4">
+    <h2 class="text-2xl font-bold mb-8">Produk Serupa</h2>
+    <div class="grid md:grid-cols-4 gap-6">
+      <% for (let i = 0; i < 4; i++) { %>
+        <div class="card-dark rounded-lg overflow-hidden border border-gray-700 hover:border-accent transition group">
+          <div class="bg-gradient-to-br from-secondary to-primary h-40 flex items-center justify-center group-hover:bg-accent/20 transition">
+            <i class="fas fa-box text-4xl text-accent/50"></i>
+          </div>
+          <div class="p-4">
+            <h3 class="font-bold text-sm mb-2 line-clamp-2">Produk Premium <%= i + 1 %></h3>
+            <p class="text-gray-400 text-xs mb-4">Produk berkualitas tinggi</p>
+            <div class="flex justify-between items-center">
+              <span class="text-accent font-bold">Rp 150.000</span>
+              <a href="#" class="btn-primary text-white px-3 py-1 rounded text-xs font-semibold">Beli</a>
+            </div>
+          </div>
+        </div>
+      <% } %>
+    </div>
+  </div>
+</section>
+
+<script>
+  const product = <%- JSON.stringify(product) %>;
+  const maxStock = <%= product.stock %>;
+
+  // Quantity controls
+  const quantityInput = document.getElementById('quantity');
+  const qtyMinusBtn = document.getElementById('qty-minus');
+  const qtyPlusBtn = document.getElementById('qty-plus');
+
+  qtyMinusBtn.addEventListener('click', () => {
+    const current = parseInt(quantityInput.value);
+    if (current > 1) quantityInput.value = current - 1;
+  });
+
+  qtyPlusBtn.addEventListener('click', () => {
+    const current = parseInt(quantityInput.value);
+    if (current < maxStock) quantityInput.value = current + 1;
+  });
+
+  // Disable buttons if stock is empty
+  <% if (product.stock <= 0) { %>
+    document.getElementById('add-to-cart-btn').disabled = true;
+    document.getElementById('buy-now-btn').disabled = true;
+    document.getElementById('add-to-cart-btn').classList.add('opacity-50', 'cursor-not-allowed');
+    document.getElementById('buy-now-btn').classList.add('opacity-50', 'cursor-not-allowed');
+  <% } %>
+
+  // Show data target section based on product (optional)
+  function checkProductType() {
+    const description = (product.description || '').toLowerCase();
+    if (description.includes('joki') || description.includes('akun')) {
+      document.getElementById('data-target-section').classList.remove('hidden');
+    }
+  }
+
+  checkProductType();
+
+  // Add to cart
+  function addToCart() {
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    const quantity = parseInt(document.getElementById('quantity').value);
+    const dataTarget = document.getElementById('data-target').value;
+    const notes = document.getElementById('notes').value;
+
+    const item = {
+      product_id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity,
+      dataTarget,
+      notes,
+      addedAt: new Date().toISOString()
+    };
+
+    cart.push(item);
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Show notification
+    showNotification('Produk berhasil ditambahkan ke keranjang!', 'success');
+
+    // Update cart badge
+    window.dispatchEvent(new Event('storage'));
+  }
+
+  // Buy now
+  function buyNow() {
+    addToCart();
+    setTimeout(() => {
+      window.location.href = '/checkout';
+    }, 500);
+  }
+
+  // Show notification
+  function showNotification(message, type = 'info') {
+    const notification = document.createElement('div');
+    notification.className = `fixed top-20 right-4 px-6 py-3 rounded-lg font-semibold text-white z-50 animate-fade-in ${
+      type === 'success' ? 'bg-green-500' : type === 'error' ? 'bg-red-500' : 'bg-blue-500'
+    }`;
+    notification.textContent = message;
+    document.body.appendChild(notification);
+
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+</script>
